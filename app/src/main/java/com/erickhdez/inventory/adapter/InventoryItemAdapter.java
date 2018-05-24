@@ -11,17 +11,12 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.bumptech.glide.Glide;
 import com.erickhdez.inventory.R;
 import com.erickhdez.inventory.model.Item;
-import com.firebase.ui.storage.images.FirebaseImageLoader;
-import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
+import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
@@ -40,7 +35,7 @@ public class InventoryItemAdapter extends ArrayAdapter<Item> {
         Item item = getItem(position);
 
         TextView itemName, itemDescription;
-        ImageView itemImage;
+        final ImageView itemImage;
         String name;
 
         StorageReference storage = FirebaseStorage.getInstance().getReference(item.getPicture());
@@ -56,7 +51,14 @@ public class InventoryItemAdapter extends ArrayAdapter<Item> {
 
             itemName.setText(name);
             itemDescription.setText(item.getDescription());
-            Glide.with(getContext()).load(storage).into(itemImage);
+
+            storage.getDownloadUrl()
+                    .addOnSuccessListener(new OnSuccessListener<Uri>() {
+                        @Override
+                        public void onSuccess(Uri uri) {
+                            Picasso.get().load(uri).into(itemImage);
+                        }
+                    });
         }
 
         return view;

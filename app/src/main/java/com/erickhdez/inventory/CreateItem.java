@@ -4,19 +4,16 @@ import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
 import android.content.Intent;
-import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Build;
-import android.provider.MediaStore;
+import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
 
-import com.bumptech.glide.Glide;
 import com.erickhdez.inventory.model.Item;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -29,8 +26,8 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
+import com.squareup.picasso.Picasso;
 
-import java.io.IOException;
 import java.util.UUID;
 
 public class CreateItem extends AppCompatActivity {
@@ -79,9 +76,7 @@ public class CreateItem extends AppCompatActivity {
                 && data != null && data.getData() != null )
         {
             filePath = data.getData();
-            Glide.with(this)
-                    .load(filePath)
-                    .into(imgItemPicture);
+            Picasso.get().load(filePath).into(imgItemPicture);
         }
     }
 
